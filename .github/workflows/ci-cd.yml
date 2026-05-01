@@ -1,0 +1,31 @@
+name: CI/CD Docker
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 🔥 build + push CLIENT
+      - name: Build client
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/retail-client ./client
+
+      - name: Push client
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/retail-client
+
+      # 🔥 build + push SERVER
+      - name: Build server
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/retail-server ./server
+
+      - name: Push server
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/retail-server
