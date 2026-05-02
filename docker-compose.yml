@@ -2,16 +2,16 @@ version: "3.8"
 
 services:
   client:
-    build: ./client
+    image: kimxuanvinh2002/client:latest
     ports:
-      - "3000:80"
+      - "80:80"
     depends_on:
       - server
 
   server:
-    build: ./server
-    ports:
-      - "5000:5000"
+    image: kimxuanvinh2002/server:latest
+    expose:
+      - "5000"
     environment:
       - MONGO_URI=mongodb://mongo:27017/mydb
     depends_on:
@@ -19,10 +19,7 @@ services:
 
   mongo:
     image: mongo:6
-    container_name: mongo
     restart: always
-    ports:
-      - "27017:27017"
     volumes:
       - mongo_data:/data/db
 
