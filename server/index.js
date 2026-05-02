@@ -46,4 +46,6 @@ mongoose
       console.log(`Server listening on ${PORT}`);
     });
   })
-  .catch((error) => console.log(`Server can't listening`));
+  .catch((error) => {
+  console.error("MongoDB error:", error);
+});
